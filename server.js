@@ -14,6 +14,22 @@ app.listen(port, ()=>{
 
 // CREATE
 app.post('/users',(req,res)=>{
+  User.create(
+    {
+      name:req.body.newData.name,
+      email:req.body.newData.email,
+      password:req.body.newData.password
+    },
+    (err,data)=>{
+      if(err){
+        res.json({success: false, message: err})
+      } else if (!data){
+        res.json({success: false, message: "Not Found"})
+      } else{
+        res.json({success: true, data: data})
+      }
+    }
+  )
   // User.create()
 })
 
@@ -21,6 +37,24 @@ app.route('/users/:id')
 // READ
 .get((req,res)=>{
   // User.findById()
+  User.findById(req.params.id,(err,data)=>{
+    if (err){
+      res.json({
+        success: false,
+        message: err
+      })
+    } else if (!data){
+      res.json({
+        success: false,
+        message: "Not Found"
+      })
+    } else{
+      res.json({
+        success: true,
+        data: data
+      })
+    }
+  })
 })
 // UPDATE
 .put((req,res)=>{
